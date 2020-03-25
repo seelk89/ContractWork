@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,11 +10,6 @@ namespace ContractWork.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<WeatherForecastController> _logger;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -23,17 +17,45 @@ namespace ContractWork.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("{w}")]
+        public IActionResult Get(string w)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var distanceMax = w.Length / 2;
+
+            if (!Regex.IsMatch(w, @"^[a-zA-Z]+$"))
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+                return BadRequest();
+            }
+
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=WordList.db;"))
+            {
+                using (var command = new SQLiteCommand(c))
+                {
+                    c.Open();
+
+                    command.CommandText = "SELECT * FROM Words";
+
+                    var wordList = new List<string>();
+
+                    using (SQLiteDataReader rdr = command.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            wordList.Add(rdr.GetString(1).ToLower());      
+                        }
+                    }
+
+                    return Ok(wordList);
+                }
+            }
+        }
+
+
+
+        public class WordDistance
+        {
+            public string Word { get; set; }
+            public int Distance { get; set; }
         }
     }
 }
