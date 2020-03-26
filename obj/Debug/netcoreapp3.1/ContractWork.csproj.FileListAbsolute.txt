@@ -21,3 +21,4 @@ C:\Users\Jesper\Desktop\VisualStudioProjects\ContractWork\obj\Debug\netcoreapp3.
 C:\Users\Jesper\Desktop\VisualStudioProjects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.csproj.CopyComplete
 C:\Users\Jesper\Desktop\VisualStudioProjects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.dll
 C:\Users\Jesper\Desktop\VisualStudioProjects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.pdb
+C:\Users\Jesper\Desktop\VisualStudioProjects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.csprojAssemblyReference.cache

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
@@ -42,38 +43,52 @@ namespace ContractWork.Controllers
                     {
                         while (rdr.Read())
                         {
-                            wordList.Add(rdr.GetString(1).ToLower());      
+                            var dbWord = rdr.GetString(1).ToLower();
+
+                            if (CheckWordIsWithinDistance(w.ToLower(), dbWord)) 
+                            {
+                                wordList.Add(dbWord);
+                            }                     
                         }
                     }                    
                 }
             }
 
-            foreach (var word in wordList)
-            {
-                if (!w.Equals(word)) 
-                {
-                    var combinedDistance = CheckWordDistanceByRemove(word);
-                }
-
-                var wordDistance = new WordDistance
-                {
-                    Word = word,
-                    Distance = 0
-                };
-            }
-
             return Ok(wordList);
         }
 
-        private int CheckWordDistanceByRemove(string word) 
+        private bool CheckWordIsWithinDistance(string passedWord, string dbWord) 
         {
-            var letters = word.ToCharArray();
-            for (int i = 0; i < letters.Length; i++)
-            {
+            var passedLetters = new List<char>();
+            passedLetters.AddRange(passedWord);
 
+            var dbLetters = new List<char>();
+            dbLetters.AddRange(dbWord);
+
+            // Check to see what word is the longest
+            var longestWord = passedLetters;
+            if (dbLetters.Count > passedLetters.Count)
+            {
+                longestWord = dbLetters;
             }
 
-            return 0;
+            var i = 0;
+            // Check letter in dbWord is not contained in passedWord
+            foreach (var c in passedLetters)
+            {
+                if (!dbLetters.Contains(c)) 
+                {
+                    i += 1;
+                }
+            }
+
+            // Returns true if dbWord is within the boundaries of allowed distance
+            if (Math.Floor(Convert.ToDouble(longestWord.Count) / 2) >= i) 
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public class WordDistance
