@@ -57,6 +57,7 @@ namespace ContractWork.Controllers
             return Ok(wordList);
         }
 
+        // Wrong way, not from passedWord to dbWord, but from dbWord to passedWord
         private int CheckByAdd(string passedWord, string dbWord)
         {
             var passedLetters = passedWord.ToCharArray();
@@ -70,10 +71,13 @@ namespace ContractWork.Controllers
 
                 for (int j = 0; j < passedLetters.Length; j++)
                 {
-                    var bla = new string(newWordLetters);
                     newWordLetters[j + 1] = passedLetters[j];
-                    if (string(newWordLetters).equals(dbWord)) 
-                    { }
+                    
+                    var newWord = new string(newWordLetters);
+                    if (newWord.Equals(dbWord)) 
+                    {
+                        return 1;
+                    }
                 }
             }
 
