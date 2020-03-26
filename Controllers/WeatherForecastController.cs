@@ -57,6 +57,29 @@ namespace ContractWork.Controllers
             return Ok(wordList);
         }
 
+        private int CheckByAdd(string passedWord, string dbWord)
+        {
+            var passedLetters = passedWord.ToCharArray();
+            var alphabet = "abcdefghijklmnopqrstuvwxy";
+            alphabet.ToCharArray();
+
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                var newWordLetters = new char[passedLetters.Length + 1];
+                newWordLetters[0] = alphabet[i];
+
+                for (int j = 0; j < passedLetters.Length; j++)
+                {
+                    var bla = new string(newWordLetters);
+                    newWordLetters[j + 1] = passedLetters[j];
+                    if (string(newWordLetters).equals(dbWord)) 
+                    { }
+                }
+            }
+
+            return 0;
+        }
+
         private bool CheckWordIsWithinDistance(string passedWord, string dbWord) 
         {
             var passedLetters = new List<char>();
@@ -85,10 +108,10 @@ namespace ContractWork.Controllers
             // Returns true if dbWord is within the boundaries of allowed distance
             if (Math.Floor(Convert.ToDouble(longestWord.Count) / 2) >= i) 
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         public class WordDistance
