@@ -20,22 +20,23 @@ namespace ContractWork.Controllers
         [HttpGet("{w}")]
         public IActionResult Get(string w)
         {
-            var distanceMax = w.Length / 2;
-
+            // Check that w only contains letters
             if (!Regex.IsMatch(w, @"^[a-zA-Z]+$"))
             {
                 return BadRequest();
             }
 
+            var distanceMax = w.Length / 2;
+            var wordList = new List<string>();
+
+            // Get words from db
             using (SQLiteConnection c = new SQLiteConnection("Data Source=WordList.db;"))
             {
                 using (var command = new SQLiteCommand(c))
                 {
                     c.Open();
 
-                    command.CommandText = "SELECT * FROM Words";
-
-                    var wordList = new List<string>();
+                    command.CommandText = "SELECT * FROM Words";      
 
                     using (SQLiteDataReader rdr = command.ExecuteReader())
                     {
@@ -43,14 +44,37 @@ namespace ContractWork.Controllers
                         {
                             wordList.Add(rdr.GetString(1).ToLower());      
                         }
-                    }
-
-                    return Ok(wordList);
+                    }                    
                 }
             }
+
+            foreach (var word in wordList)
+            {
+                if (!w.Equals(word)) 
+                {
+                    var combinedDistance = CheckWordDistanceByRemove(word);
+                }
+
+                var wordDistance = new WordDistance
+                {
+                    Word = word,
+                    Distance = 0
+                };
+            }
+
+            return Ok(wordList);
         }
 
+        private int CheckWordDistanceByRemove(string word) 
+        {
+            var letters = word.ToCharArray();
+            for (int i = 0; i < letters.Length; i++)
+            {
 
+            }
+
+            return 0;
+        }
 
         public class WordDistance
         {
