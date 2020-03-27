@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,10 @@ namespace ContractWork.Controllers
             _logger = logger;
         }
 
+        static int Minimum(int a, int b) => a < b ? a : b;
+
+        static int Minimum(int a, int b, int c) => (a = a < b ? a : b) < c ? a : c;
+
         [HttpGet("{w}")]
         public IActionResult Get(string w)
         {
@@ -27,8 +32,7 @@ namespace ContractWork.Controllers
                 return BadRequest();
             }
 
-            var distanceMax = w.Length / 2;
-            var wordList = new List<string>();
+            var wordList = new List<WordDistance>();
 
             // Get words from db
             using (SQLiteConnection c = new SQLiteConnection("Data Source=WordList.db;"))
@@ -37,85 +41,81 @@ namespace ContractWork.Controllers
                 {
                     c.Open();
 
-                    command.CommandText = "SELECT * FROM Words";      
+                    command.CommandText = "SELECT * FROM Words";
 
                     using (SQLiteDataReader rdr = command.ExecuteReader())
                     {
                         while (rdr.Read())
                         {
                             var dbWord = rdr.GetString(1).ToLower();
+                            var passedWord = w.ToLower();
 
-                            if (CheckWordIsWithinDistance(w.ToLower(), dbWord)) 
+                            // Check to see what word is the longest
+                            var longestWord = passedWord;
+                            if (dbWord.Length > passedWord.Length)
                             {
-                                wordList.Add(dbWord);
-                            }                     
+                                longestWord = dbWord;
+                            }
+
+                            var distance = CheckWordIsWithinDistance(passedWord, dbWord);
+                            if (Math.Floor(Convert.ToDouble(longestWord.Length) / 2) >= distance)
+                            {
+                                wordList.Add(new WordDistance
+                                {
+                                    Word = dbWord,
+                                    Distance = distance
+                                });
+                            }
                         }
-                    }                    
-                }
-            }
-
-            return Ok(wordList);
-        }
-
-        // Wrong way, not from passedWord to dbWord, but from dbWord to passedWord
-        private int CheckByAdd(string passedWord, string dbWord)
-        {
-            var passedLetters = passedWord.ToCharArray();
-            var alphabet = "abcdefghijklmnopqrstuvwxy";
-            alphabet.ToCharArray();
-
-            for (int i = 0; i < alphabet.Length; i++)
-            {
-                var newWordLetters = new char[passedLetters.Length + 1];
-                newWordLetters[0] = alphabet[i];
-
-                for (int j = 0; j < passedLetters.Length; j++)
-                {
-                    newWordLetters[j + 1] = passedLetters[j];
-                    
-                    var newWord = new string(newWordLetters);
-                    if (newWord.Equals(dbWord)) 
-                    {
-                        return 1;
                     }
                 }
             }
 
-            return 0;
-        }
-
-        private bool CheckWordIsWithinDistance(string passedWord, string dbWord) 
-        {
-            var passedLetters = new List<char>();
-            passedLetters.AddRange(passedWord);
-
-            var dbLetters = new List<char>();
-            dbLetters.AddRange(dbWord);
-
-            // Check to see what word is the longest
-            var longestWord = passedLetters;
-            if (dbLetters.Count > passedLetters.Count)
+            if (!wordList.Any())
             {
-                longestWord = dbLetters;
+                return StatusCode(204);
             }
 
-            var i = 0;
-            // Check letter in dbWord is not contained in passedWord
-            foreach (var c in passedLetters)
+            return Ok(wordList.OrderBy(w => w.Distance).ToList());
+        }
+
+        static int CheckWordIsWithinDistance(string passedWord, string dbWord)
+        {
+            var n = passedWord.Length + 1;
+            var m = dbWord.Length + 1;
+            var arrayD = new int[n, m];
+
+            for (var i = 0; i < n; i++)
             {
-                if (!dbLetters.Contains(c)) 
+                arrayD[i, 0] = i;
+            }
+
+            for (var j = 0; j < m; j++)
+            {
+                arrayD[0, j] = j;
+            }
+
+            for (var i = 1; i < n; i++)
+            {
+                for (var j = 1; j < m; j++)
                 {
-                    i += 1;
+                    var cost = passedWord[i - 1] == dbWord[j - 1] ? 0 : 1;
+
+                    arrayD[i, j] = Minimum(arrayD[i - 1, j] + 1, // Delete
+                                           arrayD[i, j - 1] + 1, // Insert
+                                           arrayD[i - 1, j - 1] + cost); // Change
+
+                    if (i > 1 && j > 1
+                       && passedWord[i - 1] == dbWord[j - 2]
+                       && passedWord[i - 2] == dbWord[j - 1])
+                    {
+                        arrayD[i, j] = Minimum(arrayD[i, j],
+                        arrayD[i - 2, j - 2] + cost); // Switch
+                    }
                 }
             }
 
-            // Returns true if dbWord is within the boundaries of allowed distance
-            if (Math.Floor(Convert.ToDouble(longestWord.Count) / 2) >= i) 
-            {
-                return false;
-            }
-
-            return true;
+            return arrayD[n - 1, m - 1];
         }
 
         public class WordDistance
