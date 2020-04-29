@@ -36,7 +36,6 @@ C:\Users\mst\Documents\School projects\ContractWork\bin\Debug\netcoreapp3.1\runt
 C:\Users\mst\Documents\School projects\ContractWork\bin\Debug\netcoreapp3.1\runtimes\osx-x64\native\netstandard2.0\SQLite.Interop.dll
 C:\Users\mst\Documents\School projects\ContractWork\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\netstandard2.0\SQLite.Interop.dll
 C:\Users\mst\Documents\School projects\ContractWork\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\netstandard2.0\SQLite.Interop.dll
-C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.csprojAssemblyReference.cache
 C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\staticwebassets\ContractWork.StaticWebAssets.Manifest.cache
 C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\staticwebassets\ContractWork.StaticWebAssets.xml
 C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.MvcApplicationPartsAssemblyInfo.cache
@@ -46,3 +45,5 @@ C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\Cont
 C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.csproj.CopyComplete
 C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.dll
 C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.pdb
+C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.csproj.CoreCompileInputs.cache
+C:\Users\mst\Documents\School projects\ContractWork\obj\Debug\netcoreapp3.1\ContractWork.genruntimeconfig.cache
