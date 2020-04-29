@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using System.Text.RegularExpressions;
+using ContractWork.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -13,13 +13,13 @@ namespace ContractWork.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IRepository<Word> _repository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IRepository<Word> repository)
         {
             _logger = logger;
+            _repository = repository;
         }
-
-        readonly String[] Words = { "the", "of", "and", "a", "to", "in", "is", "you", "that", "it", "he", "was", "for", "on", "are", "as", "with", "his", "they", "I", "at", "be", "this", "have", "from", "or", "one", "had", "by", "word", "but", "not", "what", "all", "were", "we", "when", "your", "can", "said", "there", "use", "an", "each", "which", "she", "do", "how", "their", "if", "will", "up", "other", "about", "out", "many", "then", "them", "these", "so", "some", "her", "would", "make", "like", "him", "into", "time", "has", "look", "two", "more", "write", "go", "see", "number", "no", "way", "could", "people", "my", "than", "first", "water", "been", "call", "who", "oil", "its", "now", "find", "long", "down", "day", "did", "get", "come", "made", "may", "part" };
 
         static int Minimum(int a, int b) => a < b ? a : b;
 
@@ -34,11 +34,12 @@ namespace ContractWork.Controllers
                 return BadRequest();
             }
 
+            var words = _repository.GetAll();
             var wordList = new List<WordDistance>();
 
-            foreach (var arrayWord in Words)
+            foreach (var dbWord in words)
             {
-                var word = arrayWord.ToLower();
+                var word = dbWord.word.ToLower();
                 var passedWord = w.ToLower();
 
                 // Check to see what word is the longest
