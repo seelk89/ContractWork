@@ -19,6 +19,8 @@ namespace ContractWork.Controllers
             _logger = logger;
         }
 
+        readonly String[] Words = { "the", "of", "and", "a", "to", "in", "is", "you", "that", "it", "he", "was", "for", "on", "are", "as", "with", "his", "they", "I", "at", "be", "this", "have", "from", "or", "one", "had", "by", "word", "but", "not", "what", "all", "were", "we", "when", "your", "can", "said", "there", "use", "an", "each", "which", "she", "do", "how", "their", "if", "will", "up", "other", "about", "out", "many", "then", "them", "these", "so", "some", "her", "would", "make", "like", "him", "into", "time", "has", "look", "two", "more", "write", "go", "see", "number", "no", "way", "could", "people", "my", "than", "first", "water", "been", "call", "who", "oil", "its", "now", "find", "long", "down", "day", "did", "get", "come", "made", "may", "part" };
+
         static int Minimum(int a, int b) => a < b ? a : b;
 
         static int Minimum(int a, int b, int c) => (a = a < b ? a : b) < c ? a : c;
@@ -34,40 +36,26 @@ namespace ContractWork.Controllers
 
             var wordList = new List<WordDistance>();
 
-            // Get words from db
-            using (SQLiteConnection c = new SQLiteConnection("Data Source=WordList.db;"))
+            foreach (var arrayWord in Words)
             {
-                using (var command = new SQLiteCommand(c))
+                var word = arrayWord.ToLower();
+                var passedWord = w.ToLower();
+
+                // Check to see what word is the longest
+                var longestWord = passedWord;
+                if (word.Length > passedWord.Length)
                 {
-                    c.Open();
+                    longestWord = word;
+                }
 
-                    command.CommandText = "SELECT * FROM Words";
-
-                    using (SQLiteDataReader rdr = command.ExecuteReader())
+                var distance = CheckWordIsWithinDistance(passedWord, word);
+                if (Math.Floor(Convert.ToDouble(longestWord.Length) / 2) >= distance)
+                {
+                    wordList.Add(new WordDistance
                     {
-                        while (rdr.Read())
-                        {
-                            var dbWord = rdr.GetString(1).ToLower();
-                            var passedWord = w.ToLower();
-
-                            // Check to see what word is the longest
-                            var longestWord = passedWord;
-                            if (dbWord.Length > passedWord.Length)
-                            {
-                                longestWord = dbWord;
-                            }
-
-                            var distance = CheckWordIsWithinDistance(passedWord, dbWord);
-                            if (Math.Floor(Convert.ToDouble(longestWord.Length) / 2) >= distance)
-                            {
-                                wordList.Add(new WordDistance
-                                {
-                                    Word = dbWord,
-                                    Distance = distance
-                                });
-                            }
-                        }
-                    }
+                        Word = word,
+                        Distance = distance
+                    });
                 }
             }
 
