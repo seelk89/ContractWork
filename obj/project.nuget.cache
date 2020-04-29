@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "DXb+a3jNwUz4rKIbjKAqX7PO0GPxop850Lp/Sne2m4YtZznaqc8y22W85DDeC/Gw8cHlX45JFm8P3gouW3LYpw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mst\\Documents\\School projects\\ContractWork\\ContractWork.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mst\\.nuget\\packages\\system.data.sqlite.core\\1.0.112\\system.data.sqlite.core.1.0.112.nupkg.sha512"
+  ],
+  "logs": []
+}

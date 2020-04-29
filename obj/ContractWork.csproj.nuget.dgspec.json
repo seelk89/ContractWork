@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jesper\\Desktop\\VisualStudioProjects\\ContractWork\\ContractWork.csproj": {}
+    "C:\\Users\\mst\\Documents\\School projects\\ContractWork\\ContractWork.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jesper\\Desktop\\VisualStudioProjects\\ContractWork\\ContractWork.csproj": {
+    "C:\\Users\\mst\\Documents\\School projects\\ContractWork\\ContractWork.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jesper\\Desktop\\VisualStudioProjects\\ContractWork\\ContractWork.csproj",
+        "projectUniqueName": "C:\\Users\\mst\\Documents\\School projects\\ContractWork\\ContractWork.csproj",
         "projectName": "ContractWork",
-        "projectPath": "C:\\Users\\Jesper\\Desktop\\VisualStudioProjects\\ContractWork\\ContractWork.csproj",
-        "packagesPath": "C:\\Users\\Jesper\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jesper\\Desktop\\VisualStudioProjects\\ContractWork\\obj\\",
+        "projectPath": "C:\\Users\\mst\\Documents\\School projects\\ContractWork\\ContractWork.csproj",
+        "packagesPath": "C:\\Users\\mst\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mst\\Documents\\School projects\\ContractWork\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Jesper\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mst\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,6 +25,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "http://nuget.grapecity.com/nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -64,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
