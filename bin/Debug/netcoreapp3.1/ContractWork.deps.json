@@ -26,6 +26,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "3.1.3",
           "Microsoft.EntityFrameworkCore.InMemory": "3.1.3",
+          "RestSharp": "106.10.1",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "3.1.0.0",
@@ -526,6 +527,17 @@
         },
         "compile": {
           "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "RestSharp/106.10.1": {
+        "runtime": {
+          "lib/netstandard2.0/RestSharp.dll": {
+            "assemblyVersion": "106.0.0.0",
+            "fileVersion": "106.10.1.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/RestSharp.dll": {}
         }
       },
       "System.Collections.Immutable/1.7.0": {
@@ -2295,6 +2307,13 @@
       "sha512": "sha512-5gK6qeq9CBCHBfB3Tim3jCJTLafT9FXFBAZZq39rC8adz8mxcjVAuQSw3jGgHqoRk0jwtXKFhXJUVur8vfeuFg==",
       "path": "microsoft.extensions.primitives/3.1.3",
       "hashPath": "microsoft.extensions.primitives.3.1.3.nupkg.sha512"
+    },
+    "RestSharp/106.10.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MhR4w8LbArVaRA5T/oAR3ZnF852QXtDXRBO84GsvyYzsm7FsjXHJ+JaM8x/nR/B/OCB1WbolGH7hqMT1GZpNJw==",
+      "path": "restsharp/106.10.1",
+      "hashPath": "restsharp.106.10.1.nupkg.sha512"
     },
     "System.Collections.Immutable/1.7.0": {
       "type": "package",

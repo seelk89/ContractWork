@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using ContractWork.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 
 namespace ContractWork.Controllers
 {
@@ -14,6 +16,7 @@ namespace ContractWork.Controllers
     {
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IRepository<Word> _repository;
+        private static string _ServiceUrl = "http://localhost:7071/api";
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger, IRepository<Word> repository)
         {
@@ -26,7 +29,7 @@ namespace ContractWork.Controllers
         static int Minimum(int a, int b, int c) => (a = a < b ? a : b) < c ? a : c;
 
         [HttpGet("{w}")]
-        public IActionResult Get(string w)
+        public async Task<IActionResult> Get(string w)
         {
             // Check that w only contains letters
             if (!Regex.IsMatch(w, @"^[a-zA-Z]+$"))
@@ -37,7 +40,11 @@ namespace ContractWork.Controllers
             var words = _repository.GetAll();
             var wordList = new List<WordDistance>();
 
-            foreach (var dbWord in words)
+            //A shorter array to test with. Test with word about (or abut if you want it misspelled to get some results)
+
+            var newWords = words.Take<Word>(10);
+
+            foreach (var dbWord in newWords)
             {
                 var word = dbWord.word.ToLower();
                 var passedWord = w.ToLower();
@@ -49,7 +56,7 @@ namespace ContractWork.Controllers
                     longestWord = word;
                 }
 
-                var distance = CheckWordIsWithinDistance(passedWord, word);
+                var distance = await GetWordDistance(passedWord, word);
                 if (Math.Floor(Convert.ToDouble(longestWord.Length) / 2) >= distance)
                 {
                     wordList.Add(new WordDistance
@@ -68,6 +75,24 @@ namespace ContractWork.Controllers
             return Ok(wordList.OrderBy(w => w.Distance).ToList());
         }
 
+        //Here is the task which calls the azure function. Now it needs to be published, and run in cloud, and we need a way to make it do it async
+        private async Task<int> GetWordDistance(string passedWord, string dbWord)
+        {
+            int result;
+            RestClient client = new RestClient();
+            client.BaseUrl = new Uri(_ServiceUrl + "/GetDistance");
+
+            var req = new RestRequest();
+
+            req.AddParameter("word", passedWord);
+            req.AddParameter("dbWord", dbWord);
+
+            var res = await client.ExecuteAsync(req);
+
+            int.TryParse(res.Content,out result);
+            return result;
+            
+        }
         static int CheckWordIsWithinDistance(string passedWord, string dbWord)
         {
             var n = passedWord.Length + 1;
